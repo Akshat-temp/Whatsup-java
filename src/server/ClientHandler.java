@@ -9,27 +9,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
-/**
- * ClientHandler — runs in its own thread for each connected client.
- *
- * Protocol (pipe-delimited text over TCP):
- *
- *   LOGIN|phone
- *   PRIVATE|receiverPhone|content
- *   PRIVATE_MEDIA|receiverPhone|mediaType|base64Data|caption
- *   GROUP|groupId|content
- *   GROUP_MEDIA|groupId|mediaType|base64Data|caption
- *   PING
- *   LOGOUT
- *
- * Server → Client messages:
- *   MSG|senderPhone|content|timestamp
- *   MSG_MEDIA|senderPhone|mediaType|base64Data|caption|timestamp
- *   GROUP_MSG|groupId|senderPhone|content|timestamp
- *   GROUP_MEDIA_MSG|groupId|senderPhone|mediaType|base64Data|caption|timestamp
- *   STATUS|OK
- *   STATUS|ERROR|reason
- */
+
 public class ClientHandler implements Runnable {
 
     private final Socket socket;
@@ -119,15 +99,15 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // ── Private message routing ────────────────────────────────────────────
+
 
     private void handlePrivate(String to, String content, String b64, String mediaType) {
         if (phone == null) { send("STATUS|ERROR|Not logged in"); return; }
 
-        // Persist to DB
+     
         MessageDAO.saveMessage(phone, to, content, b64 != null ? "media:" + to : null, mediaType);
 
-        // Route to online receiver
+        
         ClientHandler receiver = ChatServer.getHandler(to);
         if (receiver != null) {
             if (b64 != null) {
@@ -135,14 +115,13 @@ public class ClientHandler implements Runnable {
             } else {
                 receiver.send("MSG|" + phone + "|" + content + "|" + now());
             }
-            // Mark delivered immediately
-            // (pending delivery marks happen on reconnect via getPendingMessages)
+          
         }
-        // If offline: message is already in DB, will be delivered on next LOGIN
+  
         send("STATUS|OK");
     }
 
-    // ── Group message routing ──────────────────────────────────────────────
+    
 
     private void handleGroup(int groupId, String content, String b64, String mediaType) {
         if (phone == null) { send("STATUS|ERROR|Not logged in"); return; }

@@ -4,25 +4,10 @@ import java.io.*;
 import java.net.Socket;
 import java.util.function.Consumer;
 
-/**
- * ChatClient — manages the persistent TCP connection from the client side.
- *
- * Usage:
- *   ChatClient client = new ChatClient("192.168.1.5", 25565, this::onMessage);
- *   client.connect();
- *   client.login("9876543210");
- *   client.sendPrivate("1234567890", "Hello!");
- *   client.disconnect();
- *
- * The messageListener callback is called on the background thread —
- * always wrap UI updates in Platform.runLater().
- *
- * SERVER_HOST env var overrides the hard-coded host (useful for Railway/Render).
- */
+
 public class ChatClient {
 
-    // ── Connection config ──────────────────────────────────────────────────
-    // Override SERVER_HOST env var for deployed server (e.g. your Railway URL)
+   
     private static final String DEFAULT_HOST =
             System.getenv().getOrDefault("SERVER_HOST", "localhost");
     private static final int DEFAULT_PORT =
@@ -47,7 +32,7 @@ public class ChatClient {
         this.messageListener = messageListener;
     }
 
-    /** Connect and start background listener. Returns true if connected. */
+    
     public boolean connect() {
         try {
             socket = new Socket(host, port);
@@ -83,7 +68,7 @@ public class ChatClient {
         listenerThread.start();
     }
 
-    // ── Send helpers ───────────────────────────────────────────────────────
+
 
     public void login(String phone) {
         send("LOGIN|" + phone);

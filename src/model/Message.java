@@ -10,11 +10,11 @@ public class Message {
     private String  timestamp;
     private boolean isDelivered;
 
-    // Phase 3 — media support
+   
     private String  mediaPath;
-    private String  mediaType;   // "image/jpeg", "image/png", "video/mp4", etc.
+    private String  mediaType;  
 
-    // Private message constructor
+    
     public Message(String senderPhone, String receiverPhone, String content, String timestamp) {
         this.senderPhone   = senderPhone;
         this.receiverPhone = receiverPhone;
@@ -24,7 +24,6 @@ public class Message {
         this.isDelivered   = false;
     }
 
-    // Group message constructor
     public Message(String senderPhone, int groupId, String content, String timestamp) {
         this.senderPhone   = senderPhone;
         this.receiverPhone = null;
