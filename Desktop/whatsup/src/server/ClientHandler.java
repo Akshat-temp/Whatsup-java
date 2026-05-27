@@ -146,7 +146,6 @@ public class ClientHandler implements Runnable {
         send("STATUS|OK");
     }
 
-    // ── Pending message delivery on reconnect ──────────────────────────────
 
     private void deliverPendingMessages() {
         List<Message> pending = MessageDAO.getPendingMessages(phone);
@@ -158,7 +157,6 @@ public class ClientHandler implements Runnable {
             System.out.println("[Handler] Delivered " + pending.size() + " pending messages to " + phone);
     }
 
-    // ── Helpers ────────────────────────────────────────────────────────────
 
     public synchronized void send(String message) {
         if (out != null) out.println(message);

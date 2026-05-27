@@ -1,6 +1,5 @@
 ui\HomeScreen$1.class
 server\ChatClient.class
-util\OTPService.class
 App.class
 database\GroupDAO.class
 ui\ChatScreen.class
